@@ -1,0 +1,23 @@
+{
+  "name": "next-action-query",
+  "version": "0.0.1",
+  "description": "next action query library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nextjs",
+    "react-query",
+    "useswr",
+    "server-action"
+  ],
+  "author": "Alireza Kasirzare",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.2"
+  }
+}
