@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type Cache = {
   [CacheKey: string]: any;
@@ -19,6 +19,7 @@ const ActionQueryContext = createContext<ActionQueryContextType>({
   cache: {},
   setCache: () => {},
 });
+
 export const ActionQueryProvider = ({ children }: Props) => {
   const [cache, setCache] = useState<Cache>({});
 
@@ -33,3 +34,5 @@ export const ActionQueryProvider = ({ children }: Props) => {
     </ActionQueryContext.Provider>
   );
 };
+
+export const useCache = () => useContext(ActionQueryContext);
