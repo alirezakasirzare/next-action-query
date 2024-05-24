@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type Cache = {
   [CacheKey: string]: {
@@ -29,6 +29,7 @@ export const ActionQueryProvider = ({ children }: Props) => {
   const [cache, setCache] = useState<Cache>({});
   accessCache.cache = cache;
   accessCache.setCache = setCache;
+
   return (
     <ActionQueryContext.Provider
       value={{
@@ -48,18 +49,15 @@ export const refreshActionKey = (actionKey: string) => {
 
   if (cache[actionKey]) {
     const method: any = cache[actionKey].method;
-    method
+    method()
       ?.then((result: any) => {
         if (result?.success) {
-          console.log({ success: result?.success });
-        } else if (result?.error) {
-          console.log({ error: result?.error });
+          setCache((prev: any) => ({
+            ...prev,
+            [actionKey]: { value: result.success, method },
+          }));
         }
       })
       ?.catch(() => {});
-    // setCache((prev) => ({
-    //   ...prev,
-    //   [actionKey]: { value: methodResult.success, method: mutate },
-    // }));
   }
 };
