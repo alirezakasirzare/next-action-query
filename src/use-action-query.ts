@@ -72,6 +72,13 @@ export const useActionQuery = <T extends ServerActionResult, J>(
     mutate();
   }, [mutate]);
 
+  const cacheValue = actionKey && cache?.[actionKey]?.value;
+  useEffect(() => {
+    if (cacheValue) {
+      setData(cacheValue);
+    }
+  }, [cacheValue]);
+
   return {
     data,
     error,

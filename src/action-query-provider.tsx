@@ -44,7 +44,7 @@ export const ActionQueryProvider = ({ children }: Props) => {
 
 export const useCache = () => useContext(ActionQueryContext);
 
-export const refreshActionKey = (actionKey: string) => {
+export const revalidateActionKey = (actionKey: string) => {
   const { cache, setCache } = accessCache;
 
   if (cache[actionKey]) {
