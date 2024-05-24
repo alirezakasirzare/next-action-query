@@ -3,7 +3,10 @@
 import { createContext, useContext, useState } from "react";
 
 type Cache = {
-  [CacheKey: string]: any;
+  [CacheKey: string]: {
+    value: any;
+    method: (() => void) | (() => Promise<void>);
+  };
 };
 
 type ActionQueryContextType = {
@@ -20,9 +23,12 @@ const ActionQueryContext = createContext<ActionQueryContextType>({
   setCache: () => {},
 });
 
+const accessCache: any = {};
+
 export const ActionQueryProvider = ({ children }: Props) => {
   const [cache, setCache] = useState<Cache>({});
-
+  accessCache.cache = cache;
+  accessCache.setCache = setCache;
   return (
     <ActionQueryContext.Provider
       value={{
@@ -36,3 +42,24 @@ export const ActionQueryProvider = ({ children }: Props) => {
 };
 
 export const useCache = () => useContext(ActionQueryContext);
+
+export const refreshActionKey = (actionKey: string) => {
+  const { cache, setCache } = accessCache;
+
+  if (cache[actionKey]) {
+    const method: any = cache[actionKey].method;
+    method
+      ?.then((result: any) => {
+        if (result?.success) {
+          console.log({ success: result?.success });
+        } else if (result?.error) {
+          console.log({ error: result?.error });
+        }
+      })
+      ?.catch(() => {});
+    // setCache((prev) => ({
+    //   ...prev,
+    //   [actionKey]: { value: methodResult.success, method: mutate },
+    // }));
+  }
+};

@@ -30,7 +30,7 @@ export const useActionQuery = <T extends ServerActionResult, J>(
   const { cache, setCache } = useCache();
 
   const [data, setData] = useState<null | T["success"]>(
-    (actionKey && cache[actionKey]) || null
+    (actionKey && cache[actionKey]?.value) || null
   );
   const [error, setError] = useState<null | T["error"]>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +49,7 @@ export const useActionQuery = <T extends ServerActionResult, J>(
         setError(null);
         setCache((prev) => ({
           ...prev,
-          [actionKey]: methodResult.success,
+          [actionKey]: { value: methodResult.success, method: actionMethod },
         }));
         if (onSuccess) {
           onSuccess(methodResult.success);
